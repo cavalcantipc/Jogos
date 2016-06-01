@@ -1,0 +1,14 @@
+package br.ufrpe.pixengine.mrnom;
+
+import javafx.scene.image.Image;
+
+public class Tail{	
+	int x;
+	int y;
+	Image tailImage = new Image("/mr.nom/tail.png");
+	
+	public Tail(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+}
