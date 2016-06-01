@@ -5,8 +5,9 @@ import br.ufrpe.pixengine.core.GameContainer;
 import br.ufrpe.pixengine.core.Renderer;
 
 public class Score extends GameObject {
-	public Score(int x, int y) {
-		
+	double score;
+	public Score(double score,int x, int y) {
+		this.score = score;
 	}
 
 	@Override

@@ -4,7 +4,7 @@ import br.ufrpe.pixengine.components.ObjectManager;
 import br.ufrpe.pixengine.components.State;
 import br.ufrpe.pixengine.core.GameContainer;
 import br.ufrpe.pixengine.core.Renderer;
-import br.ufrpe.pixengine.core.fx.Image;
+import javafx.scene.image.Image;
 
 public class PlayState extends State {
 	public PlayState() {

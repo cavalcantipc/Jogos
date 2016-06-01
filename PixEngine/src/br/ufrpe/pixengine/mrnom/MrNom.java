@@ -16,6 +16,7 @@ public class MrNom extends Application {
         gc.setClearScreen(true);
         gc.setLightEnable(false);
         gc.setDynamicLights(false);
+        gc.setLockFrameRate(true);
         gc.start();
         primaryStage.setOnCloseRequest(e -> exitPlatform(primaryStage));
     }

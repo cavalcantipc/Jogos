@@ -3,7 +3,7 @@ package br.ufrpe.pixengine.mrnom;
 import br.ufrpe.pixengine.components.GameObject;
 import br.ufrpe.pixengine.core.GameContainer;
 import br.ufrpe.pixengine.core.Renderer;
-import br.ufrpe.pixengine.core.fx.Image;
+import javafx.scene.image.Image;
 
 public class GameImage extends GameObject {
 	Image image;

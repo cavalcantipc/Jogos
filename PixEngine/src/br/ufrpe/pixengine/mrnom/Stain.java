@@ -6,7 +6,7 @@ import br.ufrpe.pixengine.components.Collider;
 import br.ufrpe.pixengine.components.GameObject;
 import br.ufrpe.pixengine.core.GameContainer;
 import br.ufrpe.pixengine.core.Renderer;
-import br.ufrpe.pixengine.core.fx.Image;
+import javafx.scene.image.Image;
 
 public class Stain extends GameObject {
 	boolean ate = false;
