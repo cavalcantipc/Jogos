@@ -1,0 +1,42 @@
+package br.ufrpe.pixengine.mrnom;
+
+import br.ufrpe.pixengine.components.GameObject;
+import br.ufrpe.pixengine.core.GameContainer;
+import br.ufrpe.pixengine.core.Renderer;
+import javafx.scene.image.Image;
+
+public class Score extends GameObject {
+	public int score;
+	public Image image = new Image("/mr.nom/background.png");
+	
+	public Score(int score, int x, int y) {
+		this.score = score;
+	}
+
+	@Override
+	public void update(GameContainer gc, float dt) {
+		updateComponents(gc, dt);
+	}
+
+	@Override
+	public void render(GameContainer gc, Renderer r) {
+		int x1 = (score / 10) * 32;
+		int x2 = (score % 10) * 32;
+		r.drawImage(image,, 0);
+	}
+
+	@Override
+	public void dispose() {
+
+	}
+
+	@Override
+	public void componentEvent(String name, GameObject object) {
+		
+	}
+	
+	public void addPoints(){
+		score += 10;
+	}
+
+}

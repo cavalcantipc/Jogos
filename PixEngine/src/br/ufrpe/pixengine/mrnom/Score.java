@@ -3,11 +3,15 @@ package br.ufrpe.pixengine.mrnom;
 import br.ufrpe.pixengine.components.GameObject;
 import br.ufrpe.pixengine.core.GameContainer;
 import br.ufrpe.pixengine.core.Renderer;
+import javafx.scene.image.Image;
 
 public class Score extends GameObject {
-	double score;
-	public Score(double score,int x, int y) {
+	public int score;
+	public Image image = new Image("/mr.nom/numbers.png");
+	
+	public Score(int score, int x, int y) {
 		this.score = score;
+		setTag("score");
 	}
 
 	@Override
@@ -17,7 +21,12 @@ public class Score extends GameObject {
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
-		r.drawFillRect((int) x, (int) y, (int) w, (int) h, 0xff00ff00);
+		int x1 = (score / 10) * 20;
+		int x2 = (score % 10) * 20;
+		r.drawImage(image, x1, 0, 20, image.getHeight(),
+				140,440, 20, image.getHeight());
+		r.drawImage(image, x2, 0, 20, image.getHeight(),
+				160,440, 20, image.getHeight());
 	}
 
 	@Override

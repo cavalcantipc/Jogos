@@ -16,12 +16,12 @@ public class GameImage extends GameObject {
 	
 	@Override
 	public void update(GameContainer gc, float dt) {
-		
+		updateComponents(gc, dt);
 	}
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
-		r.drawImage(image);		
+		r.drawImage(image,x,y);		
 	}
 
 	@Override

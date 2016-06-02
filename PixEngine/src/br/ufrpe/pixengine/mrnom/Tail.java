@@ -1,5 +1,6 @@
 package br.ufrpe.pixengine.mrnom;
 
+import br.ufrpe.pixengine.components.Collider;
 import javafx.scene.image.Image;
 
 public class Tail{	

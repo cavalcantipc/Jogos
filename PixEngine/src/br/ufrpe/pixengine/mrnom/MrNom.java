@@ -9,9 +9,6 @@ public class MrNom extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         GameContainer gc = new GameContainer(new GameManager(), primaryStage);
-        gc.setWidth(320);
-        gc.setHeight(480);
-        gc.setScale(3);
         gc.setTitle("Mr. Nom");
         gc.setClearScreen(true);
         gc.setLightEnable(false);

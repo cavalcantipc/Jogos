@@ -9,15 +9,15 @@ import br.ufrpe.pixengine.core.Renderer;
 import javafx.scene.image.Image;
 
 public class Stain extends GameObject {
-	boolean ate = false;
-	Random randX = new Random(9);
-	Random randY = new Random(14);
+	Random r = new Random();
 	int imgCount = 1;
+	int score;
 
-	public Stain(int x, int y) {
+	public Stain(int score, int x, int y) {
+		this.score = score;
 		setTag("stain");
-		this.x = x;
-		this.y = y;
+		this.x = r.nextInt((300 - 20) + 1) + 20;
+		this.y = r.nextInt((460 - 20) + 1) + 20;
 		w = 32;
 		h = 32;
 		addComponent(new Collider());
@@ -25,20 +25,13 @@ public class Stain extends GameObject {
 
 	@Override
 	public void update(GameContainer gc, float dt) {
-		if(ate){
-			x = randX.nextFloat() * 32;
-			y = randY.nextFloat() * 32;
-			if(imgCount < 3)
-				imgCount ++;
-			else
-				imgCount = 1;
-		}
+		((Score)gc.getGame().peek().getManager().findObject("score")).score = this.score;
 		updateComponents(gc, dt);
 	}
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
-		r.drawImage(new Image("/mr.nom/stain" + imgCount + ".png"));
+		r.drawImage(new Image("/mr.nom/stain" + imgCount + ".png"), this.x, this.y);
 	}
 
 	@Override
@@ -49,8 +42,18 @@ public class Stain extends GameObject {
 	@Override
 	public void componentEvent(String name, GameObject object) {
 		if (name.equalsIgnoreCase("collider")) {
+			Player p = (Player) object;
+			score++;
+			this.x = r.nextInt((300 - 20) + 1) + 20;
+			this.y = r.nextInt((460 - 20) + 1) + 20;
+			if (imgCount < 3)
+				imgCount++;
+			else
+				imgCount = 1;
 			if (object.getX() < x) {
-				ate = true;
+				Tail tail = p.Tails.get(p.tailCount - 1);
+				p.tailCount++;
+				p.Tails.add(new Tail(tail.x, tail.y));
 			}
 		}
 	}

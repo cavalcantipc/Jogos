@@ -1,0 +1,60 @@
+package br.ufrpe.pixengine.mrnom;
+
+import java.util.Random;
+
+import br.ufrpe.pixengine.components.Collider;
+import br.ufrpe.pixengine.components.GameObject;
+import br.ufrpe.pixengine.core.GameContainer;
+import br.ufrpe.pixengine.core.Renderer;
+import javafx.scene.image.Image;
+
+public class Stain extends GameObject {
+	Random randX = new Random(9);
+	Random randY = new Random(14);
+	int imgCount = 1;
+
+	public Stain(int x, int y) {
+		setTag("stain");
+		this.x = (float)randX.nextInt(9)*32;
+		this.y = (float)randY.nextInt(14)*32;
+		w = 32;
+		h = 32;
+		addComponent(new Collider());
+	}
+
+	@Override
+	public void update(GameContainer gc, float dt) {
+
+		updateComponents(gc, dt);
+	}
+
+	@Override
+	public void render(GameContainer gc, Renderer r) {
+		r.drawImage(new Image("/mr.nom/stain" + imgCount + ".png"), x, y);
+	}
+
+	@Override
+	public void dispose() {
+
+	}
+
+	@Override
+	public void componentEvent(String name, GameObject object) {
+		if (name.equalsIgnoreCase("collider")) {
+			Player p = (Player) object;
+			Tail tail = p.Tails.get(p.tailCount-1);
+			p.tailCount++;
+			p.Tails.add(new Tail(tail.x, tail.y));
+			if (object.getX() < x) {
+				this.x = randX.nextFloat() * 32;
+				System.out.println(randX.nextFloat());
+				this.y = randY.nextFloat() * 32;
+				if (imgCount < 3)
+					imgCount++;
+				else
+					imgCount = 1;
+			}
+		}
+	}
+
+}

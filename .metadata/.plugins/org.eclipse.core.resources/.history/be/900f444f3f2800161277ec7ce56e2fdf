@@ -1,0 +1,149 @@
+package br.ufrpe.pixengine.mrnom;
+
+import java.util.ArrayList;
+
+import br.ufrpe.pixengine.components.Collider;
+import br.ufrpe.pixengine.components.GameObject;
+import br.ufrpe.pixengine.core.GameContainer;
+import br.ufrpe.pixengine.core.Renderer;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+
+public class Player extends GameObject {
+	Image head;
+	ArrayList<Tail> Tails;
+	int tailCount;
+	Direction direction;
+	int step;
+
+	public Player(int x, int y) {
+		tailCount = 3;
+		setTag("player");
+		head = new Image("/mr.nom/headup.png");
+		this.Tails = new ArrayList<Tail>();
+		this.x = x;
+		this.y = y;
+		w = 42;
+		h = 42;
+		step = 0;
+		addComponent(new Collider());
+		int newY = y + 52;
+		for (int i = 0; i < tailCount; i++) {
+			Tails.add(i, new Tail(x + 5, newY));
+			newY += 42;
+		}
+		direction = Direction.UP;
+	}
+
+	public void moveTails(int headX, int headY) {
+		for (int i = tailCount; i == 0; i--) {
+			Tail current = Tails.get(i);
+			if (i > 0) {
+				Tail previous = Tails.get(i - 1);
+				current.x = previous.x;
+				current.y = previous.y;
+			} else {
+				current.x = headX + 5;
+				current.y = headY + 5;
+			}
+
+		}
+	}
+
+	@Override
+	public void update(GameContainer gc, float dt) {
+		step++;
+		if (gc.getInput().isKeyPressed(KeyCode.LEFT.ordinal()) && direction != Direction.RIGHT && direction != Direction.LEFT) {
+			direction = Direction.LEFT;
+			
+
+		}
+		if (gc.getInput().isKeyPressed(KeyCode.RIGHT.ordinal()) && direction != Direction.RIGHT && direction != Direction.LEFT) {
+			direction = Direction.RIGHT;
+			
+
+		}
+		if (gc.getInput().isKeyPressed(KeyCode.UP.ordinal()) && direction != Direction.UP && direction != Direction.DOWN) {
+			direction = Direction.UP;
+			
+
+		}
+		if (gc.getInput().isKeyPressed(KeyCode.DOWN.ordinal()) && direction != Direction.UP && direction != Direction.DOWN) {
+			direction = Direction.DOWN;
+			
+		}
+		
+		if(step > (1/dt/(2.5))){
+			/*if(increase){
+				this.setTailSize(tailSize+1);
+				increase=false;
+			}*/
+			
+			step = 0;
+			switch(direction.value){
+			case 0:
+				head = new Image("/mr.nom/headup.png");
+				y -= 42;
+				if(y<0)
+					y = gc.getHeight()+42;
+				break;
+			case 1:
+				head = new Image("/mr.nom/headdown.png");
+				y += 42;
+				if(y>gc.getHeight())
+					y = 0;
+				break;
+			case 2:
+				head = new Image("/mr.nom/headright.png");
+				x += 42;
+				if(x>gc.getWidth())
+					x = 0;
+				break;
+			case 3:
+				head = new Image("/mr.nom/headleft.png");
+				x -= 42;
+				if(x<0)
+					x = gc.getWidth()-42;				
+				break;
+			default:
+				break;
+			}
+						
+			/*if(checkColision(x,y)){
+				gc.getGame().push(new GameOverState(tailSize-2));
+			}*/
+		}
+
+		updateComponents(gc, dt);
+	}
+
+	@Override
+	public void render(GameContainer gc, Renderer r) {
+		r.drawImage(head, x, y);
+		Tail current;				
+		for (int i = 0; i < tailCount; i++) {
+			current = Tails.get(i);
+			r.drawImage(current.tailImage, current.x, current.y);
+		}
+	}
+
+	@Override
+	public void dispose() {
+
+	}
+
+	@Override
+	public void componentEvent(String name, GameObject object) {
+
+	}
+
+	private enum Direction {
+		UP(0), DOWN(1), RIGHT(2), LEFT(3);
+		
+		public int value;
+		Direction(int valor) {
+			value = valor;
+		}
+	}
+
+}

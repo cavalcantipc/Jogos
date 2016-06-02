@@ -5,17 +5,23 @@ import br.ufrpe.pixengine.components.State;
 import br.ufrpe.pixengine.core.GameContainer;
 import br.ufrpe.pixengine.core.Renderer;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 
 public class PlayState extends State {
-	public PlayState() {
+	int score;
+	public PlayState(int score) {
+		this.score = score;
 		manager.addObject(new GameImage(new Image("/mr.nom/background.png"),0 ,0));
-		manager.addObject(new Player(0, 0));
-		manager.addObject(new Stain(156, 116));
-		manager.addObject(new Score(450, 160));
+		manager.addObject(new Player(score,160, 240));
+		manager.addObject(new Stain(score, 0, 0));
+		manager.addObject(new Score(score, 0,0));
 	}
 
 	@Override
 	public void update(GameContainer gc, float dt) {
+		if (gc.getInput().isKeyPressed(KeyCode.ENTER.ordinal())){
+			gc.getGame().push(new PauseState(score));
+		}
 		manager.updateObjects(gc, dt);
 	}
 

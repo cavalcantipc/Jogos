@@ -7,17 +7,17 @@ import br.ufrpe.pixengine.core.Renderer;
 import javafx.scene.image.Image;
 
 public class GameOverState extends State {
-	double score;
-	public GameOverState(double score) {
+	int score;
+
+	public GameOverState(int score) {
 		this.score = score;
-		manager.addObject(new GameImage(new Image("/mr.nom/background.png"),0 ,0));
-		manager.addObject(new GameImage(new Image("/mr.nom/gameover.png"), 0, 160));
-		manager.addObject(new Player(0, 0));
+		manager.addObject(new GameImage(new Image("/mr.nom/background.png"), 0, 0));
+		manager.addObject(new GameImage(new Image("/mr.nom/gameover.png"), 80, 160));
 		manager.addObject(new Score(score, 450, 160));
 	}
 
 	@Override
-	public void update(GameContainer gc, float dt) {	
+	public void update(GameContainer gc, float dt) {
 		manager.updateObjects(gc, dt);
 	}
 

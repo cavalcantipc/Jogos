@@ -8,7 +8,7 @@ import javafx.stage.WindowEvent;
 public class GameManager extends AbstractGame {
     
 	public GameManager() {
-		push(new PauseState(0));
+		push(new PauseState(-1));
 	}
 	
 	@Override

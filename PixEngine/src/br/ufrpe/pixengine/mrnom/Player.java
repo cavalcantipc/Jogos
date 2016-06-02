@@ -14,8 +14,11 @@ public class Player extends GameObject {
 	ArrayList<Tail> Tails;
 	int tailCount;
 	Direction direction;
-	
-	public Player(int x, int y) {
+	int step;
+	int score;
+
+	public Player(int score, int x, int y) {
+		this.score = score;
 		tailCount = 3;
 		setTag("player");
 		head = new Image("/mr.nom/headup.png");
@@ -24,6 +27,7 @@ public class Player extends GameObject {
 		this.y = y;
 		w = 42;
 		h = 42;
+		step = 0;
 		addComponent(new Collider());
 		int newY = y + 52;
 		for (int i = 0; i < tailCount; i++) {
@@ -33,38 +37,81 @@ public class Player extends GameObject {
 		direction = Direction.UP;
 	}
 
+	public void moveTails(int headX, int headY) {
+		for (int i = tailCount - 1; i >= 0; i--) {
+			Tail current = Tails.get(i);
+			if (i > 0) {
+				Tail previous = Tails.get(i - 1);
+				current.x = previous.x;
+				current.y = previous.y;
+			} else {
+				current.x = headX + 5;
+				current.y = headY + 5;
+			}
+
+		}
+	}
+
 	@Override
 	public void update(GameContainer gc, float dt) {
-		if (gc.getInput().isKey(KeyCode.UP.ordinal())) {
-			y -= 42 * dt;
+		step++;
+		if (gc.getInput().isKeyPressed(KeyCode.LEFT.ordinal()) && direction != Direction.RIGHT
+				&& direction != Direction.LEFT) {
+			direction = Direction.LEFT;
 
-			if (y < 0) {
-				y = 0;
-			}
+		}
+		if (gc.getInput().isKeyPressed(KeyCode.RIGHT.ordinal()) && direction != Direction.RIGHT
+				&& direction != Direction.LEFT) {
+			direction = Direction.RIGHT;
+
+		}
+		if (gc.getInput().isKeyPressed(KeyCode.UP.ordinal()) && direction != Direction.UP
+				&& direction != Direction.DOWN) {
+			direction = Direction.UP;
+
+		}
+		if (gc.getInput().isKeyPressed(KeyCode.DOWN.ordinal()) && direction != Direction.UP
+				&& direction != Direction.DOWN) {
+			direction = Direction.DOWN;
+
 		}
 
-		if (gc.getInput().isKey(KeyCode.DOWN.ordinal())) {
-			y += 42 * dt;
-
-			if (y < 0) {
-				y = 0;
+		if (step > (1 / dt / (2.5))) {
+			step = 0;
+			moveTails((int) x, (int) y);
+			switch (direction.value) {
+			case 0:
+				head = new Image("/mr.nom/headup.png");
+				y -= 42;
+				if (y < 0)
+					y = gc.getHeight() - 42;
+				break;
+			case 1:
+				head = new Image("/mr.nom/headdown.png");
+				y += 42;
+				if (y > gc.getHeight())
+					y = 0;
+				break;
+			case 2:
+				head = new Image("/mr.nom/headright.png");
+				x += 42;
+				if (x > gc.getWidth())
+					x = 0;
+				break;
+			case 3:
+				head = new Image("/mr.nom/headleft.png");
+				x -= 42;
+				if (x < 0)
+					x = gc.getWidth() - 42;
+				break;
+			default:
+				break;
 			}
-		}
 
-		if (gc.getInput().isKey(KeyCode.LEFT.ordinal())) {
-			x -= 42 * dt;
-
-			if (y < 0) {
-				y = 0;
+			if (checkColision(x, y)) {
+				gc.getGame().push(new GameOverState(score));
 			}
-		}
 
-		if (gc.getInput().isKey(KeyCode.RIGHT.ordinal())) {
-			x += 42 * dt;
-
-			if (y + h > gc.getHeight()) {
-				y = gc.getHeight() - h;
-			}
 		}
 
 		updateComponents(gc, dt);
@@ -72,8 +119,12 @@ public class Player extends GameObject {
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
-		r.drawImage(head);
-		// r.drawFillRect((int) x, (int) y, (int) w, (int) h, 0xffffffff);
+		r.drawImage(head, x, y);
+		Tail current;
+		for (int i = 0; i < tailCount; i++) {
+			current = Tails.get(i);
+			r.drawImage(current.tailImage, current.x, current.y);
+		}
 	}
 
 	@Override
@@ -85,9 +136,24 @@ public class Player extends GameObject {
 	public void componentEvent(String name, GameObject object) {
 
 	}
-	
-	private enum Direction{
-		UP, DOWN, LEFT, RIGHT;
+
+	public Boolean checkColision(float x, float y) {
+		for (int i = tailCount - 1; i >= 0; i--) {
+			if (Tails.get(i).x == x && Tails.get(i).y == y) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private enum Direction {
+		UP(0), DOWN(1), RIGHT(2), LEFT(3);
+
+		public int value;
+
+		Direction(int valor) {
+			value = valor;
+		}
 	}
 
 }
